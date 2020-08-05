@@ -188,33 +188,53 @@ public class StudentForm extends JPanel {
 
             JOptionPane.showMessageDialog(null, "Please input all the data");
         } else {
+            try {
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student", "root", "");
 
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student", "root", "");
-
-            fullName = fullNametextField1.getText();
-            phoneNum = phoneNumtextField2.getText();
-            email = EmailtextField3.getText();
-            address = AddresstextField4.getText();
+                fullName = fullNametextField1.getText();
+                phoneNum = phoneNumtextField2.getText();
+                email = EmailtextField3.getText();
+                address = AddresstextField4.getText();
 
 
-            statement = con.prepareStatement("update student set fullname=?,phonenum=?, email=?, address=? where fullname =?");
+                statement = con.prepareStatement("update student set fullname=?,phonenum=?, email=?, address=? where fullname =?");
 
-            statement.setString(1, fullName);
-            statement.setString(2, phoneNum);
-            statement.setString(3, email);
-            statement.setString(4, address);
-            statement.setString(5, fullName);
+                statement.setString(1, fullName);
+                statement.setString(2, phoneNum);
+                statement.setString(3, email);
+                statement.setString(4, address);
+                statement.setString(5, fullName);
 
-            statement.executeUpdate();
+                statement.executeUpdate();
 
-            JOptionPane.showMessageDialog(null, "Record edited");
+                JOptionPane.showMessageDialog(null, "Record edited");
 
-            fullNametextField1.setText("");
-            phoneNumtextField2.setText("");
-            EmailtextField3.setText("");
-            AddresstextField4.setText("");
-            fullNametextField1.requestFocus();
+                fullNametextField1.setText("");
+                phoneNumtextField2.setText("");
+                EmailtextField3.setText("");
+                AddresstextField4.setText("");
+                fullNametextField1.requestFocus();
 
+            } catch (SQLException exception) {
+                Logger.getLogger(StudentForm.class.getName()).log(Level.SEVERE, null, exception);
+            } finally {
+                if (statement != null) {
+                    try {
+                        statement.close();
+                    } catch (SQLException exception) {
+                        Logger.getLogger(StudentForm.class.getName()).log(Level.SEVERE, null, exception);
+                    }
+                }
+                if (con != null) {
+                    try {
+
+                        con.close();
+                    } catch (SQLException exception) {
+                        Logger.getLogger(StudentForm.class.getName()).log(Level.SEVERE, null, exception);
+                    }
+                }
+
+            }
         }
     }
 
@@ -224,32 +244,52 @@ public class StudentForm extends JPanel {
 
             JOptionPane.showMessageDialog(null, "Please input all the data");
         } else {
+            try {
+                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student", "root", "");
 
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student", "root", "");
+                int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?", "Delete",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+                if (result == JOptionPane.YES_OPTION) {
 
-            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete?", "Delete",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
-            if (result == JOptionPane.YES_OPTION) {
+                    statement = con.prepareStatement("delete from student where fullname =?");
 
-                statement = con.prepareStatement("delete from student where fullname =?");
+                    statement.setString(1, fullNametextField1.getText());
 
-                statement.setString(1, fullNametextField1.getText());
+                }
+
+
+                JOptionPane.showMessageDialog(null, "Record deleted");
+
+
+                statement.executeUpdate();
+
+                fullNametextField1.setText("");
+                phoneNumtextField2.setText("");
+                EmailtextField3.setText("");
+                AddresstextField4.setText("");
+                fullNametextField1.requestFocus();
+
+            } catch (SQLException exception) {
+                Logger.getLogger(StudentForm.class.getName()).log(Level.SEVERE, null, exception);
+            } finally {
+                if (statement != null) {
+                    try {
+                        statement.close();
+                    } catch (SQLException exception) {
+                        Logger.getLogger(StudentForm.class.getName()).log(Level.SEVERE, null, exception);
+                    }
+                }
+                if (con != null) {
+                    try {
+
+                        con.close();
+                    } catch (SQLException exception) {
+                        Logger.getLogger(StudentForm.class.getName()).log(Level.SEVERE, null, exception);
+                    }
+                }
 
             }
-
-
-            JOptionPane.showMessageDialog(null, "Record deleted");
-
-
-            statement.executeUpdate();
-
-            fullNametextField1.setText("");
-            phoneNumtextField2.setText("");
-            EmailtextField3.setText("");
-            AddresstextField4.setText("");
-            fullNametextField1.requestFocus();
-
         }
 
     }
@@ -277,17 +317,20 @@ public class StudentForm extends JPanel {
         {
             mainPanel.setBorder(new TitledBorder(null, "Student Form", TitledBorder.LEADING, TitledBorder.TOP,
                     new Font("Segoe UI", Font.BOLD, 12)));
-            mainPanel.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(new javax.swing.border.EmptyBorder(
-                    0, 0, 0, 0), "JF\u006frmDesi\u0067ner Ev\u0061luatio\u006e", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder
-                    .BOTTOM, new java.awt.Font("Dialo\u0067", java.awt.Font.BOLD, 12), java.awt.Color.
-                    red), mainPanel.getBorder()));
-            mainPanel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-                @Override
-                public void propertyChange(java.
-                                                   beans.PropertyChangeEvent e) {
-                    if ("borde\u0072".equals(e.getPropertyName())) throw new RuntimeException();
-                }
-            });
+            mainPanel.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.TitledBorder(
+                    new javax.swing.border.EmptyBorder(0, 0, 0, 0), "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn"
+                    , javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.BOTTOM
+                    , new java.awt.Font("Dia\u006cog", java.awt.Font.BOLD, 12)
+                    , java.awt.Color.red), mainPanel.getBorder()));
+            mainPanel.addPropertyChangeListener(
+                    new java.beans.PropertyChangeListener() {
+                        @Override
+                        public void propertyChange(java.beans.PropertyChangeEvent e
+                        ) {
+                            if ("\u0062ord\u0065r".equals(e.getPropertyName())) throw new RuntimeException()
+                                    ;
+                        }
+                    });
             mainPanel.setLayout(null);
 
             //---- label1 ----
